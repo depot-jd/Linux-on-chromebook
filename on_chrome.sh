@@ -44,7 +44,7 @@ EOF
 
 chroot ${MNT} apt update
 # Here you can add pkg you want :
-chroot ${MNT} apt install -y gnome mpv firefox-esr
+chroot ${MNT} apt install -y gnome mpv firefox-esr alsa-utils
 chroot ${MNT} apt clean
 
 # Install firmware
