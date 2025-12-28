@@ -10,8 +10,8 @@ Howto install :
 
 # If you run debian like :
 apt install cgpt debootstrap parted e2fsprogs
-
-cd install_linux_on_chromebook
+cd /usr/local/src ; git clone  git@github.com:depot-jd/Linux-on-chromebook.git
+cd Linux-on-chromebook
 chmod +x first_stage.sh on_chrome.sh 
 ./first_stage.sh /dev/<device>
 
@@ -29,7 +29,7 @@ If you want to pack your own kernel :
 # Replace UUID
 conf="kern_guid=%U console=tty0 console=tty1  loglevel=7 plymouth.enable=0 PMOS_NOSPLASH pmos_boot_uuid=925f33ed-7e80-486b-a684-616e0838f9c5 pmos_root_uuid=ae206ac8-43da-4fb0-a691-e0cd675b3462 pmos_rootfsopts=defaults"
 
-cd install_linux_on_chromebook
+cd Linux-on-chromebook
 # Here devkeys come from chromeos, dtb/vmlinuz/initramfs from postmarketOS.
 mkdepthcharge -o my_kernel  --keydir kernel/devkeys/ -c -b kernel/mt8186-corsola-magneton-sku393217.dtb  -d kernel/vmlinuz  -i kernel/initramfs
 
