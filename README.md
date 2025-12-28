@@ -1,43 +1,102 @@
-Disclaimer: This project is provided “as is”, without warranty of any kind. Any use of this software is at the user’s own responsibility.
-Author: jd
+# Linux on ARM Chromebook (MT8186)
 
+Two scripts to install Debian on ARM Chromebooks (MT8186) using debootstrap.  
+Tested on models 14M686 and 14M868.  
+Other chipsets require kernel and firmware adjustments.
 
-Thanks to PostmarketOS for the kernel, this is a lot of work.
+---
 
-Two scripts for installing debian on arm chromebook MT8186 with debootstrap. Works great on 14M686, need to change kernel/firmware for other chipsets.
+## Disclaimer
 
-###Howto install (on debian like) :
+This project is provided "as is", without warranty of any kind.  
+Any use of this software is entirely at the user's own responsibility.
+
+---
+
+## Author
+
+jd
+
+---
+
+## Credits
+
+Thanks to PostmarketOS for the kernel.
+
+---
+
+## Installation
+
+```bash
+###############################################################################
+# Debian-based host
+###############################################################################
+
+apt update
 apt install cgpt debootstrap parted e2fsprogs
-cd /usr/local/src ; git clone  git@github.com:depot-jd/Linux-on-chromebook.git
+
+cd /usr/local/src
+git clone git@github.com:depot-jd/Linux-on-chromebook.git
 cd Linux-on-chromebook
-chmod +x first_stage.sh on_chrome.sh 
+
+chmod +x first_stage.sh on_chrome.sh
+
 ./first_stage.sh /dev/<device>
 
-Boot on arm64 machine like your chrome os, enable dev mode, reboot and run shell with CTRL-T, enter "shell".
-You need to copy on_chrome.sh, chmox +x. find your device and after running ./on_chrome.sh.
-Reboot and select 
+###############################################################################
+# Reboot Chromebook
+# Enable Developer Mode
+# Press CTRL+T, then type: shell
+###############################################################################
 
-At this moment you have a running system on SDcard, if you want you can now run the same installation on local emmc disk of your chromebook.
-Just give the right device to first_stage.sh and on_chrome.sh script (/dev/mmcblk0 on my 14M868).
-Dont forget this will erase your chromeOS, but who need to run chromeos ? ;) (Meeeee the little first_stage.sh brother)
+chmod +x on_chrome.sh
+./on_chrome.sh
 
+###############################################################################
+# Reboot and select the new boot entry
+###############################################################################
 
-If you want to pack your own kernel :
+###############################################################################
+# Optional: repeat the same procedure on internal eMMC
+# Example device for model 14M868:
+# /dev/mmcblk0
+###############################################################################
 
-## Replace UUID
-conf="kern_guid=%U console=tty0 console=tty1  loglevel=7 plymouth.enable=0 PMOS_NOSPLASH pmos_boot_uuid=925f33ed-7e80-486b-a684-616e0838f9c5 pmos_root_uuid=ae206ac8-43da-4fb0-a691-e0cd675b3462 pmos_rootfsopts=defaults"
+###############################################################################
+# Optional: custom kernel packaging
+###############################################################################
 
-cd Linux-on-chromebook
-Here devkeys come from chromeos, dtb/vmlinuz/initramfs from postmarketOS.
-mkdepthcharge -o my_kernel  --keydir kernel/devkeys/ -c -b kernel/mt8186-corsola-magneton-sku393217.dtb  -d kernel/vmlinuz  -i kernel/initramfs
+conf="kern_guid=%U console=tty0 console=tty1 loglevel=7 plymouth.enable=0 PMOS_NOSPLASH \
+pmos_boot_uuid=925f33ed-7e80-486b-a684-616e0838f9c5 \
+pmos_root_uuid=ae206ac8-43da-4fb0-a691-e0cd675b3462 \
+pmos_rootfsopts=defaults"
 
-For installing kernel:
-dd if=my_kernel of=/dev/<first_partition_of_my_dev> (ex: /dev/sda1, /dev/mmcblk0p1)
+# devkeys from ChromeOS
+# dtb, vmlinuz and initramfs from PostmarketOS
 
-## Todo in gnome
-* Configure tactil in gnome configuration : two fingers press, tap to click, scrolling method : side/edge, scroll direction : natural 
+mkdepthcharge -o my_kernel \
+  --keydir kernel/devkeys/ \
+  -c \
+  -b kernel/mt8186-corsola-magneton-sku393217.dtb \
+  -d kernel/vmlinuz \
+  -i kernel/initramfs
 
-## known issue
-- No sound in speaker, check ucm2 and remove old alsa map : rm /var/lib/alsa/asound.state # and reboot
+# write kernel to first partition of the target device
+dd if=my_kernel of=/dev/<first_partition_of_device>
 
+###############################################################################
+# Post-install notes
+###############################################################################
 
+# GNOME touchpad configuration:
+# - two-finger press
+# - tap to click
+# - side or edge scrolling
+# - natural scroll direction
+
+###############################################################################
+# Known issue: no sound on internal speakers
+###############################################################################
+
+rm /var/lib/alsa/asound.state
+reboot
