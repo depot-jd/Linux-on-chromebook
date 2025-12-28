@@ -28,44 +28,34 @@ Thanks to PostmarketOS for the kernel.
 ## Installation
 
 ```bash
-###############################################################################
-# Debian-based host
-###############################################################################
-
+# install required tools on a Debian-based system
 apt update
 apt install cgpt debootstrap parted e2fsprogs
 
+# clone repository
 cd /usr/local/src
 git clone git@github.com:depot-jd/Linux-on-chromebook.git
 cd Linux-on-chromebook
 
+# make scripts executable
 chmod +x first_stage.sh on_chrome.sh
 
+# prepare Debian system on target device (SD card or eMMC)
 ./first_stage.sh /dev/<device>
 
-###############################################################################
-# Reboot Chromebook
-# Enable Developer Mode
-# Press CTRL+T, then type: shell
-###############################################################################
+# reboot Chromebook
+# enable Developer Mode
+# press CTRL+T and type: shell
 
+# run second stage directly on the Chromebook
 chmod +x on_chrome.sh
 ./on_chrome.sh
 
-###############################################################################
-# Reboot and select the new boot entry
-###############################################################################
+# reboot and select the new boot entry
 
-###############################################################################
-# Optional: repeat the same procedure on internal eMMC
-# Example device for model 14M868:
-# /dev/mmcblk0
-###############################################################################
+# optional: repeat the same procedure on internal eMMC (device for model 14M868: /dev/mmcblk0)
 
-###############################################################################
-# Optional: custom kernel packaging
-###############################################################################
-
+# optional: custom kernel packaging
 conf="kern_guid=%U console=tty0 console=tty1 loglevel=7 plymouth.enable=0 PMOS_NOSPLASH \
 pmos_boot_uuid=925f33ed-7e80-486b-a684-616e0838f9c5 \
 pmos_root_uuid=ae206ac8-43da-4fb0-a691-e0cd675b3462 \
@@ -76,7 +66,7 @@ pmos_rootfsopts=defaults"
 
 mkdepthcharge -o my_kernel \
   --keydir kernel/devkeys/ \
-  -c \
+  -c $conf \
   -b kernel/mt8186-corsola-magneton-sku393217.dtb \
   -d kernel/vmlinuz \
   -i kernel/initramfs
@@ -84,19 +74,12 @@ mkdepthcharge -o my_kernel \
 # write kernel to first partition of the target device
 dd if=my_kernel of=/dev/<first_partition_of_device>
 
-###############################################################################
-# Post-install notes
-###############################################################################
+# GNOME touchpad configuration
+# two-finger press
+# tap to click
+# side or edge scrolling
+# natural scroll direction
 
-# GNOME touchpad configuration:
-# - two-finger press
-# - tap to click
-# - side or edge scrolling
-# - natural scroll direction
-
-###############################################################################
-# Known issue: no sound on internal speakers
-###############################################################################
-
+# known issue: no sound on internal speakers
 rm /var/lib/alsa/asound.state
 reboot
