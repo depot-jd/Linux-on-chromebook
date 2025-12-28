@@ -6,9 +6,7 @@ Thanks to PostmarketOS for the kernel, this is a lot of work.
 
 Two scripts for installing debian on arm chromebook MT8186 with debootstrap. Works great on 14M686, need to change kernel/firmware for other chipsets.
 
-Howto install :
-
-# If you run debian like :
+###Howto install (on debian like) :
 apt install cgpt debootstrap parted e2fsprogs
 cd /usr/local/src ; git clone  git@github.com:depot-jd/Linux-on-chromebook.git
 cd Linux-on-chromebook
@@ -26,20 +24,20 @@ Dont forget this will erase your chromeOS, but who need to run chromeos ? ;) (Me
 
 If you want to pack your own kernel :
 
-# Replace UUID
+## Replace UUID
 conf="kern_guid=%U console=tty0 console=tty1  loglevel=7 plymouth.enable=0 PMOS_NOSPLASH pmos_boot_uuid=925f33ed-7e80-486b-a684-616e0838f9c5 pmos_root_uuid=ae206ac8-43da-4fb0-a691-e0cd675b3462 pmos_rootfsopts=defaults"
 
 cd Linux-on-chromebook
-# Here devkeys come from chromeos, dtb/vmlinuz/initramfs from postmarketOS.
+Here devkeys come from chromeos, dtb/vmlinuz/initramfs from postmarketOS.
 mkdepthcharge -o my_kernel  --keydir kernel/devkeys/ -c -b kernel/mt8186-corsola-magneton-sku393217.dtb  -d kernel/vmlinuz  -i kernel/initramfs
 
-# For installing kernel
+For installing kernel:
 dd if=my_kernel of=/dev/<first_partition_of_my_dev> (ex: /dev/sda1, /dev/mmcblk0p1)
 
-###### Todo in gnome #####
+## Todo in gnome
 * Configure tactil in gnome configuration : two fingers press, tap to click, scrolling method : side/edge, scroll direction : natural 
 
-###### known issue ######
+## known issue
 - No sound in speaker, check ucm2 and remove old alsa map : rm /var/lib/alsa/asound.state # and reboot
 
 
