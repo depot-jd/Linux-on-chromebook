@@ -53,7 +53,10 @@ chmod +x first_stage.sh on_chrome.sh
 
 # run second stage directly on the Chromebook
 chmod +x on_chrome.sh
+# On Linux
 ./on_chrome.sh
+# On chromeOS
+sudo bash ./on_chrome.sh </dev/<device>>
 
 # reboot and select the new dev boot menu : "Boot from external disk"
 
