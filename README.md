@@ -4,6 +4,10 @@ Two scripts to install Debian on ARM Chromebooks (MT8186) using debootstrap.
 Tested on models 14M686 and 14M868.  
 Other chipsets require kernel and firmware adjustments.
 
+
+The UEFI firmware on ARM Chromebooks does not allow booting a standard ISO to install a Linux distribution.
+The approach used here is to rely on an SD card as an intermediate system. Once the system is booted from the SD card, the installation can be repeated on the Chromebook’s internal storage (eMMC). The first stage of debootstrap can be performed on any Linux system, regardless of CPU architecture. However, the second stage must be executed on an ARM64 machine, namely the Chromebook itself. It is not possible to run the second stage directly on the eMMC while running ChromeOS, because ChromeOS already uses this storage device. Therefore, when executing the second stage from ChromeOS, the SD card must be used as the target. If you want to keep a dual-boot setup with ChromeOS and Linux, you can also run Linux entirely from the SD card. This works reliably, but using a high-performance SD card is required (for example, SanDisk A2, UHS-I Class 3, minimum 64 GB). Slower cards result in significantly reduced application load times.
+
 ---
 
 ## Disclaimer
@@ -51,7 +55,7 @@ chmod +x first_stage.sh on_chrome.sh
 chmod +x on_chrome.sh
 ./on_chrome.sh
 
-# reboot and select the new boot entry
+# reboot and select the new dev boot menu : "Boot from external disk"
 
 # optional: repeat the same procedure on internal eMMC (device for model 14M868: /dev/mmcblk0)
 
