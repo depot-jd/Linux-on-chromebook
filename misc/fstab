@@ -1,0 +1,2 @@
+UUID=ae206ac8-43da-4fb0-a691-e0cd675b3463 / ext4 errors=remount-ro 0 1
+UUID=925f33ed-7e80-486b-a684-616e0838f9c6 /boot ext3 errors=remount-ro 0 1
