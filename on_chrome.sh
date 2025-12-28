@@ -35,6 +35,9 @@ echo $hostn > ${MNT}/etc/hostname
 cp -Rp misc/modules ${MNT}/etc/
 depmod -a
 
+# Install Alsa conf
+cp -Rp misc/ucm2/ ${MNT}/usr/share/alsa/
+
 # Set sources.list
 cat > ${MNT}/etc/apt/sources.list <<EOF
 deb http://http.debian.net/debian stable main non-free non-free-firmware contrib
@@ -49,9 +52,6 @@ chroot ${MNT} apt clean
 
 # Install firmware
 cp -Rp misc/firmware/ ${MNT}/lib/
-
-# Install Alsa conf
-cp -Rp misc/ucm2/ ${MNT}/usr/share/alsa/
 
 dpkg-reconfigure locales
 dpkg-reconfigure tzdata
