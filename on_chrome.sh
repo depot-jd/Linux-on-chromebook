@@ -38,6 +38,9 @@ depmod -a
 # Install Alsa conf
 cp -Rp misc/ucm2/ ${MNT}/usr/share/alsa/
 
+# Suspend mode is not supported, juste lock session when lid is closed.
+cp -Rp misc/logind.conf ${MNT}/etc/systemd/logind.conf
+
 # Set sources.list
 cat > ${MNT}/etc/apt/sources.list <<EOF
 deb http://http.debian.net/debian stable main non-free non-free-firmware contrib
