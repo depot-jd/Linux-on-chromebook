@@ -87,6 +87,9 @@ dd if=my_kernel of=/dev/<first_partition_of_device>
 # side or edge scrolling
 # natural scroll direction
 
-# known issue: no sound on internal speakers
+# known issue: 
+##no sound on internal speakers : 
 rm /var/lib/alsa/asound.state
 reboot
+
+## Suspend mode does not works well.
