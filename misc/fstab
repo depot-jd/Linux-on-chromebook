@@ -1,2 +1,10 @@
 UUID=ae206ac8-43da-4fb0-a691-e0cd675b3463 / ext4 errors=remount-ro 0 1
 UUID=925f33ed-7e80-486b-a684-616e0838f9c6 /boot ext3 errors=remount-ro 0 1
+
+# Not strictly required, but recommended to reduce wear on SD cards / eMMC. Adjust according to available RAM size.
+# /var/cache could be very fat with upgrade or flatpak use.
+tmpfs   /var/log    tmpfs   defaults,noatime,size=20M   0  0
+tmpfs   /run        tmpfs   rw,nosuid,nodev,noexec,mode=755,size=100M     0  0
+tmpfs   /tmp        tmpfs   rw,nosuid,nodev,noexec,mode=1777,size=1G       0  0
+tmpfs   /var/cache  tmpfs   rw,nosuid,nodev,noexec,mode=755,size=4G      0  0
+
