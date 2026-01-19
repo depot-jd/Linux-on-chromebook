@@ -49,14 +49,15 @@ chmod +x first_stage.sh on_chrome.sh
 
 # reboot Chromebook
 # enable Developer Mode
-# press CTRL+T and type: shell
+# VT-2 shell with : ctrl+reload (button with circular arrow)
+# enable usb boot with "enable_dev_usb_boot" command or with crossystem command
 
 # run second stage directly on the Chromebook
 chmod +x on_chrome.sh
 # On Linux
 ./on_chrome.sh
 # On chromeOS
-sudo bash ./on_chrome.sh </dev/<device>>
+shell ./on_chrome.sh </dev/<device>>
 
 # reboot and select the new dev boot menu : "Boot from external disk"
 
@@ -86,10 +87,13 @@ dd if=my_kernel of=/dev/<first_partition_of_device>
 # tap to click
 # side or edge scrolling
 # natural scroll direction
+# 
 
 # known issue: 
 ##no sound on internal speakers : 
 rm /var/lib/alsa/asound.state
+alsactl init
+alsactl store
 reboot
 
 ## Suspend mode does not works well.

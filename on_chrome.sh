@@ -35,9 +35,6 @@ echo $hostn > ${MNT}/etc/hostname
 cp -Rp misc/modules ${MNT}/etc/
 depmod -a
 
-# Install Alsa conf
-cp -Rp misc/ucm2/ ${MNT}/usr/share/alsa/
-
 # Suspend mode is not supported, juste lock session when lid is closed.
 cp -Rp misc/logind.conf ${MNT}/etc/systemd/logind.conf
 
@@ -52,6 +49,12 @@ chroot ${MNT} apt update
 # Here you can add pkg you want :
 chroot ${MNT} apt install -y gnome mpv firefox-esr alsa-utils
 chroot ${MNT} apt clean
+
+# Install Alsa conf
+cp -Rp misc/ucm2/ ${MNT}/usr/share/alsa/
+chroot ${MNT} rm /var/lib/alsa/asound.state
+chroot ${MNT} alsactl init
+chroot ${MNT} alsactl store
 
 # Install firmware
 cp -Rp misc/firmware/ ${MNT}/lib/
